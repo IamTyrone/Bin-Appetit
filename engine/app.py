@@ -4,6 +4,8 @@ from sqlalchemy.orm import DeclarativeBase
 import os
 from sqlalchemy.sql import func
 from flask_migrate import Migrate
+from utils.send_email import send_email
+from utils.email_constants import message_text, message
 
 
 
@@ -48,6 +50,9 @@ def register():
   db.session.add(user)
   db.session.commit()
   json_response = jsonify(user.to_dict())
+  message_ = message()
+  message_info = message_text(message_, f"Good Day")
+  send_email("tyronemguni@gmail.com", message_info)
   return json_response
 
 @app.route("/users")
